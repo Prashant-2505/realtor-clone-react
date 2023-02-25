@@ -1,4 +1,6 @@
  import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
+import Header from "./Components/Header";
+
 import ForgotPassword from "./Pages/ForgotPassword";
 import Home from "./Pages/Home";
 import Offers from "./Pages/Offers";
@@ -10,6 +12,8 @@ function App() {
   return (
    <>
    <Router>
+    {/* all components outside routes will bi visible for all the pages */}
+    <Header/>
     <Routes>
      <Route path='/' element={<Home/>}/>
      <Route path='/profile' element={<Profile/>}/>
