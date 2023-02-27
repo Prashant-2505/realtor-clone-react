@@ -1,8 +1,15 @@
 import React from "react";
 import { useState } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import OAuthh from "../Components/OAuthh";
+import {getAuth, createUserWithEmailAndPassword, updateProfile} from 'firebase/auth'
+import {db} from '../firebase'
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+// we have to imprt the db too from firebase.js otherwise it show erroe app not intialize cause all info will gona store in firebase storage 
+
+import {navigate} from 'react-router-dom'
+import { toast } from "react-toastify";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,12 +20,41 @@ function SignUp() {
     password: "",
   });
   const { name,email, password } = formData;
+  const navigate = useNavigate()
+
 
   function onChange(e) {
     SetFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
+  }
+
+  // function for from submitting using firebase auth read doc for understand how to use
+  async function onSubmit(e)
+  {
+     e.preventDefault()
+
+     try {
+      const auth = getAuth()
+      const userCredential = await createUserWithEmailAndPassword(auth,email,password)
+
+      updateProfile (auth.currentUser,{
+        displayName : name
+      })
+      const user = userCredential.user
+      const formDataCopy = {...formData}
+      delete formDataCopy.password
+      // used firebase method to give of user register
+      formDataCopy.timestamp = serverTimestamp()
+
+      await setDoc(doc(db, 'users',user.uid), formDataCopy)
+      toast.success('sign up successful')
+      navigate('/')
+     } 
+     catch (error) {
+      toast.error('something went wrong with the registeration')
+     }
   }
 
   return (
@@ -37,8 +73,7 @@ function SignUp() {
         </div>
 
         <div className="w-full md:w-[60%] lg:w-[40%] lg:ml-20">
-          <form>
-
+          <form onSubmit={onSubmit}> 
           <input
               type="text"
               id="name"

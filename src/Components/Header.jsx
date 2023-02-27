@@ -18,7 +18,7 @@ function Header() {
     <div className=" bg-white border-b shadow-sm sticky top-0 z-50">
       <header className="flex justify-between items-center px-4 max-w-6xl mx-auto">
         <div>
-          <img
+          <img 
             src="https://static.rdc.moveaws.com/images/logos/rdc-logo-default.svg"
             alt="logo"
             className="h-5 cursor-pointer "
@@ -28,9 +28,9 @@ function Header() {
 
         <div >
           <ul className="flex space-x-10">
-            <li className={` cursor-pointer py-3 tetx-sm font-semibold text-gray-500 border-b-4 border-b-transparent ${pathMatchRoute('/') && 'text-black border-b-red-600'}`} onClick={()=>navigate('/')}>Home</li>
-            <li className={` cursor-pointer py-3 tetx-sm font-semibold text-gray-500 border-b-4 border-b-transparent ${pathMatchRoute('/offers') && 'text-black border-b-red-600'}`} onClick={()=>navigate('/offers')}>Offers</li>
-            <li className={` cursor-pointer py-3 tetx-sm font-semibold text-gray-500 border-b-4 border-b-transparent ${pathMatchRoute('/sign-in') && 'text-black border-b-red-600'}`}onClick={()=>navigate('/sign-in')}>Sign-in</li>
+            <li className={` cursor-pointer py-3 tetx-sm font-semibold text-gray-500 border-b-4 border-b-transparent ${pathMatchRoute('/')  &&'text-black border-b-red-500'}`} onClick={()=>navigate('/')}>Home</li>
+            <li className={` cursor-pointer py-3 tetx-sm font-semibold text-gray-500 border-b-4 border-b-transparent ${pathMatchRoute('/offers') && 'text-black border-b-red-500'}`} onClick={()=>navigate('/offers')}>Offers</li>
+            <li className={` cursor-pointer py-3 tetx-sm font-semibold text-gray-500 border-b-4 border-b-transparent ${pathMatchRoute('/sign-in') && 'text-black border-b-red-500'}`}onClick={()=>navigate('/sign-in')}>Sign-in</li>
           </ul>
         </div>
       </header>
