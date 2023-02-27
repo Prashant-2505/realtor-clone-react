@@ -1,9 +1,14 @@
-import { within } from "@testing-library/react";
+
 import React from "react";
 import { useState } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import OAuthh from "../Components/OAuthh";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { toast } from "react-toastify";
+import { async } from "@firebase/util";
+import { onSnapshot } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,7 +21,7 @@ function SignIn() {
   });
   // here we destructur it to use seperately
   const { email, password } = formData;
-
+const navigate = useNavigate()
     // Onchange is function that trigger when value og given inout is change and we use prevState to store the prevous entered data
   // here we us prestate as an variable who store all previous value thts why we use down spread operator 
   // this function is used to take value from user and store in for data by capturing the user input using id we provide below
@@ -25,6 +30,25 @@ function SignIn() {
       ...prevState,
       [e.target.id]: e.target.value,
     }));
+  }
+
+
+  // firebase work
+  async function onSubmit(e) {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      if (userCredential.user) {
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("Bad user credentials");
+    }
   }
 
   return (
@@ -43,7 +67,7 @@ function SignIn() {
         </div>
 
         <div className="w-full md:w-[60%] lg:w-[40%] lg:ml-20">
-          <form>
+          <form onSubmit={onSubmit}>
             <input
               type="email"
               id="email"
