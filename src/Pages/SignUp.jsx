@@ -119,7 +119,7 @@ function SignUp() {
               <p>
                 Have an account ?
                 <Link
-                  to="/sign-up"
+                  to="/sign-in"
                   className="text-blue-600 hover:text-blue-800 transition duration-400 ease-in-out ml-2"
                 >
                   Sign in

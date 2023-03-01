@@ -5,7 +5,7 @@ function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   function pathMatchRoute(route) {
-    if (route == location.pathname) {
+    if (route === location.pathname) {
       return true;
     }
   }
@@ -25,7 +25,7 @@ function Header() {
         <div>
           <ul className="flex space-x-10">
             <li
-              className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
+              className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px]  ${
                 pathMatchRoute("/") && "text-black border-b-red-600"
               }`}
               onClick={() => navigate("/")}
@@ -33,7 +33,7 @@ function Header() {
               Home
             </li>
             <li
-              className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
+              className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px]  ${
                 pathMatchRoute("/offers") && "text-black border-b-red-600"
               }`}
               onClick={() => navigate("/offers")}
@@ -41,7 +41,7 @@ function Header() {
               Offers
             </li>
             <li
-              className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px] border-b-transparent ${
+              className={`cursor-pointer py-3 text-sm font-semibold text-gray-400 border-b-[3px]  ${
                 (pathMatchRoute("/sign-in") || pathMatchRoute("/profile")) &&
                 "text-black border-b-red-600"
               }`}
@@ -61,5 +61,4 @@ export default Header;
 // we are using useLocation go find the location of the current page by (location.pathname)--> give the name of path and then using
 // function passing route and check id route == pathname the do some styli on that like give bottom border of red and check the Text
 // color of menu  where && means for condition true then do some styling else nothing happen
-
 // then we using Navigate for give the navigation of function and cretae the onClick self function all li and the logo if we click on that that then it will agai reach to its location we provide to it
