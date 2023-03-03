@@ -10,8 +10,12 @@ import {
 } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 import { v4 as uuidv4 } from "uuid";
+import {setDoc, collection, serverTimestamp, doc, addDoc} from 'firebase/firestore'
+import {db} from '../firebase'
+import { useNavigate } from "react-router";
 
 function CreateListing() {
+  const navigate = useNavigate()
   const auth = getAuth();
 
   const [geoLoctaionEnabled, setGeoLoctaionEnabled] = useState(true);
@@ -23,7 +27,7 @@ function CreateListing() {
     bedrooms: "1",
     bathrooms: "1",
     parking: false,
-    furnishe: false,
+    furnished: false,
     address: "",
     description: "",
     offer: true,
@@ -169,7 +173,22 @@ function CreateListing() {
       return;
     });
     console.log(imgUrls)
-  }
+    const formDataCopy = {
+      ...formData,
+      imgUrls,
+      geolocation,
+      timestamp: serverTimestamp(),
+    };
+    
+    delete formDataCopy.images;
+    !formDataCopy.offer && delete formDataCopy.discountPrice;
+    delete formDataCopy.latitude;
+    delete formDataCopy.longitude;
+    const docRef = await addDoc(collection(db, "listings"), formDataCopy);
+    setLoading(false);
+    toast.success("Listing created");
+   navigate(`/category/${formDataCopy.type}/${docRef.id}`)
+   }
 
   if (loading) {
     return <Spinner />;
