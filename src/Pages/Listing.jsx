@@ -12,11 +12,14 @@ import SwiperCore, {
 } from "swiper";
 import "swiper/css/bundle";
 import { FaBed,FaBath,FaParking, FaChair, FaMapMarkerAlt, FaShare } from "react-icons/fa";
-
+ import {getAuth} from 'firebase/auth'
+import Contact from "../Components/Contact";
 function Listing() {
+  const auth = getAuth()
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [shareLinkCopied, setShareLinkedCopied] = useState(false);
+  const [contactLandlord, setContactLandlord] = useState(false)
   SwiperCore.use([Autoplay, Pagination, Navigation]);
 
   const params = useParams();
@@ -76,7 +79,7 @@ function Listing() {
       )}
 
       <div className=" m-4 flex flex-col md:flex-row max-w-6xl lg:mx-auto p-4 rounded-lg shadow-lg bg-while lg:space-x-5">
-        <div className=" w-full h-[200px] lg:h-[400px]">
+        <div className=" w-full  lg:h-[400px]">
           <p className="text-2xl font-bold mb-3 text-blue-900">
             {listing.name} - ${" "}
             {listing.offer
@@ -106,7 +109,7 @@ function Listing() {
           <p className="mt-3 mb-3 ">
             <span className="font-semibold"> Description -</span>{listing.description}
             </p>
-            <ul className=" flex items-center space-x-3 lg:space-x-10 text-sm font-semibold ">
+            <ul className=" flex items-center space-x-3 lg:space-x-10 text-sm font-semibold mb-6 ">
               <li className="flex items-center whitespace-nowrap gap-2 ">
                 <FaBed className="text-lg "/>
                 {+listing.bedrooms>1 ?`${listing.bedrooms} Beds` : '1 Bed' }
@@ -127,6 +130,15 @@ function Listing() {
                 {listing.Furnished ? 'Furnished ' : 'No Furnished' }
               </li>
             </ul>
+            {listing.userRef !== auth.currentUser?.uid && !contactLandlord && (
+                <div className="mt-6">
+                <button onClick={()=>setContactLandlord(true)} className="px-7 py-3 bg-blue-600 rounded text-white font-semibold shadow-md hover:bg-blue-700 hover:shadow-lg active:bg-blue-800 active:shadow-xl transition duration-200 ease-in-out w-full uppercase" >Contact Landlord</button>
+                </div>
+            )}
+            {contactLandlord && (
+              <Contact userRef={listing.userRef} listing={listing}/>
+            )}
+         
         </div>
         <div className="bg-pink-500 w-full h-[200px] lg:h-[400px] z-10 overflow-x-hidden"></div>
       </div>
