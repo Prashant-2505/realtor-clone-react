@@ -1,9 +1,12 @@
 import React from 'react'
+import Slider from '../Components/Slider'
 
-export default function Home() {
+function Home() {
   return (
     <div>
-      Home
+    <Slider/>
     </div>
   )
 }
+
+export default Home
