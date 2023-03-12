@@ -92,7 +92,7 @@ function Listing() {
             {listing.name}
           </p>
 
-          <p className="text-xl font-bold mb-3 text-blue-500">$ {listing.offer ? listing.discountedPrice : listing.regularPrice}
+          <p className="text-xl font-bold mb-3 text-blue-500">$ {listing.offer ? listing.regularPrice-listing.discountedPrice : listing.regularPrice}
             {listing.type === "rent" ? " / month" : ""}
           </p>
 
@@ -105,12 +105,11 @@ function Listing() {
               {listing.type === "rent" ? "Rent" : "Sale"}
             </p>
             <p>
-              {listing.offer && (
-                <p className="w-full max-w-[200px] bg-green-800 rounded-md p-1 text-white text-center font-semibold shadow-md">
-                  ${+listing.regularPrice - +listing.discountedPrice} after
-                  discount
-                </p>
-              )}
+            {listing.offer && (
+              <p className="w-full max-w-[200px] bg-green-800 rounded-md p-1 text-white text-center font-semibold shadow-md">
+                ${ listing.discountedPrice} discount
+              </p>
+            )}
             </p>
           </div>
           <p className="mt-3 mb-3 ">

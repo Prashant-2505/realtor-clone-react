@@ -31,7 +31,7 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
           <p className="text-[#457b9d] mt-2 font-semibold">
             <span>$</span>
             {listing.offer
-              ? listing.discountedPrice
+              ? listing.regularPrice-listing.discountedPrice
                   
               : listing.regularPrice
                  }
