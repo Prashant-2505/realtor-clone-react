@@ -90,9 +90,12 @@ function Listing() {
         <div className=" w-full  lg:h-[400px]">
           <p className="text-2xl font-bold mb-3 text-blue-900">
             {listing.name}
-            {listing.offer ? listing.discountedPrice : listing.regularPrice}
+          </p>
+
+          <p className="text-xl font-bold mb-3 text-blue-500">$ {listing.offer ? listing.discountedPrice : listing.regularPrice}
             {listing.type === "rent" ? " / month" : ""}
           </p>
+
           <p className="flex items-center gap-3 mt-5 mb-3 font-bold">
             <FaMapMarkerAlt className="text-green-700" />
             {listing.address}

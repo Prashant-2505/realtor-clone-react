@@ -11,6 +11,7 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
           className="h-[170px] w-full object-cover hover:scale-105 transition-scale duration-200 ease-in"
           loading="lazy"
           src={listing.imgUrls[0]}
+          alt='image'
         />
         <Moment
           className="absolute top-2 left-2 bg-[#3377cc] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg"
@@ -26,9 +27,14 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
             </p>
           </div>
           <p className="font-semibold m-0 text-xl truncate">{listing.name}</p>
+          <br></br>
           <p className="text-[#457b9d] mt-2 font-semibold">
-            $
-            {listing.offer ? listing.discountPrice : listing.regularPrice}
+            <span>$</span>
+            {listing.offer
+              ? listing.discountedPrice
+                  
+              : listing.regularPrice
+                 }
             {listing.type === "rent" && " / month"}
           </p>
           <div className="flex items-center mt-[10px] space-x-3">

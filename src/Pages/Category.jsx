@@ -1,119 +1,120 @@
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import {
-    collection,
-    getDocs,
-    limit,
-    orderBy,
-    query,
-    startAfter,
-    Timestamp,
-    where,
-  } from "firebase/firestore";
-  import React, { useEffect, useState } from "react";
-  import { toast } from "react-toastify";
-  import { db } from "../firebase";
-  import Spinner from "../Components/Spinner";
-  import ListingItem from "../Components/ListingItem";
-import { useParams } from "react-router";
-  
-  function Category() {
-    const [Listing, setListing] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const[lastFetchData, setLastFatchData]= useState(null)
-    const params = useParams()
-  
-    useEffect(() => {
-      async function fetchListing() {
-        try {
-          // get reference
-          const listingRef = collection(db, "listings");
-          // create query
-          const q = query(
-            listingRef,
-            where('type', "==", params.categoryName),
-            orderBy("timestamp", "desc"),
-            limit(8)
-          );
-          // executing query and get data from database acording to query
-          const querySnap = await getDocs(q);
-          // here we are storing the last offer listing in a variable that are currently in querysnap or shawn in a page by creating  variable and we all offer data is in querysnap the we ise.doc on query to access data from database and minus -1 from the querysnap length to get the details of last offer data
-          const lastOffer = querySnap.docs[querySnap.docs.length-1]
-          setLastFatchData(lastOffer)
-          let listings = [];
-          querySnap.forEach((doc) => {
-            return listings.push({
-              id: doc.id,
-              data: doc.data(),
-            });
-          });
-          setListing(listings);
-          setLoading(false)
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      fetchListing();
-    }, []);
-  
-  
-    async function onFetchMoreOffer()
-    {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+  where,
+} from "firebase/firestore";
+import { db } from "../firebase";
+import Spinner from '../Components/Spinner'
+import { useParams } from "react-router-dom";
+import ListingItem from "../Components/ListingItem";
+
+export default function Category() {
+  const [listings, setListings] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [lastFetchedListing, setLastFetchListing] = useState(null);
+  const params = useParams();
+  useEffect(() => {
+    async function fetchListings() {
       try {
-        // get reference
         const listingRef = collection(db, "listings");
-        // create query
         const q = query(
           listingRef,
           where("type", "==", params.categoryName),
           orderBy("timestamp", "desc"),
-          startAfter(lastFetchData),
-          limit(4)
+          limit(8)
         );
-        // executing query and get data from database acording to query
         const querySnap = await getDocs(q);
-        const lastOffer = querySnap.docs[querySnap.docs.length-1]
-        setLastFatchData(lastOffer)
-        let listings = [];
+        const lastVisible = querySnap.docs[querySnap.docs.length - 1];
+        setLastFetchListing(lastVisible);
+        const listings = [];
         querySnap.forEach((doc) => {
           return listings.push({
             id: doc.id,
             data: doc.data(),
           });
         });
-        setListing((prevState)=>[
-         ...prevState, ...listings
-        ]);
-        setLoading(false)
+        setListings(listings);
+        setLoading(false);
       } catch (error) {
-        console.log(error);
+        toast.error("Could not fetch listing");
       }
     }
-    
-  
-    return <div className="max-w-6xl mx-auto p-3">
-      <h1 className="text-3xl text-center mt-6 font-bold mb-6">{params.categoryName==='rent'?"Places for rent":"Places for sale"}</h1>
+
+    fetchListings();
+  }, [params.categoryName]);
+
+  async function onFetchMoreListings() {
+    try {
+      const listingRef = collection(db, "listings");
+      const q = query(
+        listingRef,
+        where("type", "==", params.categoryName),
+        orderBy("timestamp", "desc"),
+        startAfter(lastFetchedListing),
+        limit(4)
+      );
+      const querySnap = await getDocs(q);
+      const lastVisible = querySnap.docs[querySnap.docs.length - 1];
+      setLastFetchListing(lastVisible);
+      const listings = [];
+      querySnap.forEach((doc) => {
+        return listings.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+      setListings((prevState) => [...prevState, ...listings]);
+      setLoading(false);
+    } catch (error) {
+      toast.error("Could not fetch listing");
+    }
+  }
+
+  return (
+    <div className="max-w-6xl mx-auto px-3">
+      <h1 className="text-3xl text-center mt-6 font-bold mb-6">
+        {params.categoryName === "rent" ? "Places for rent" : "Places for sale"}
+      </h1>
       {loading ? (
-        <Spinner />) : Listing && Listing.length > 0 ? (
-          <>
+        <Spinner />
+      ) : listings && listings.length > 0 ? (
+        <>
           <main>
             <ul className="sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-              {Listing.map((listing)=>(
-                 <ListingItem key={listing.id} id={listing.id} listing={listing.data}/>
-              ))}  
+              {listings.map((listing) => (
+                <ListingItem
+                  key={listing.id}
+                  id={listing.id}
+                  listing={listing.data}
+                />
+              ))}
             </ul>
           </main>
-          {lastFetchData && (
-            <div className="flex items-center justify-center mb-4">
-                <button onClick={onFetchMoreOffer} className="bg-white px-3 py-1.5 text-gray-700 border border-gray300  font-semibold hover:border-slate-600 rounded transition duration-150 ease-in-out">Load more</button>
+          {lastFetchedListing && (
+            <div className="flex justify-center items-center">
+              <button
+                onClick={onFetchMoreListings}
+                className="bg-white px-3 py-1.5 text-gray-700 border border-gray-300 mb-6 mt-6 hover:border-slate-600 rounded transition duration-150 ease-in-out"
+              >
+                Load more
+              </button>
             </div>
           )}
-          </>
-        ) :
-        (
-          <p>There are no current offer</p>
-        )
-      }
-    </div>;
-  }
-  
-  export default Category;
-  
+        </>
+      ) : (
+        <p>
+          There are no current{" "}
+          {params.categoryName === "rent"
+            ? "places for rent"
+            : "places for sale"}
+        </p>
+      )}
+    </div>
+  );
+}
