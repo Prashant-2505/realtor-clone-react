@@ -61,7 +61,7 @@ function Listing() {
               className="relative w-full overflow-hidden h-[300px]"
               style={{
                 background: `url(${listing.imgUrls[index]}) center no-repeat`,
-                backgroundSize:'cover'
+                backgroundSize: "cover",
               }}
             ></div>
           </SwiperSlide>
@@ -89,14 +89,8 @@ function Listing() {
       <div className=" m-4 flex flex-col md:flex-row max-w-6xl lg:mx-auto p-4 rounded-lg shadow-lg bg-[#F0FDF4] lg:space-x-5">
         <div className=" w-full  lg:h-[400px]">
           <p className="text-2xl font-bold mb-3 text-blue-900">
-            {listing.name} - ${" "}
-            {listing.offer
-              ? listing.discountedPrice
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              : listing.regularPrice
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            {listing.name}
+            {listing.offer ? listing.discountedPrice : listing.regularPrice}
             {listing.type === "rent" ? " / month" : ""}
           </p>
           <p className="flex items-center gap-3 mt-5 mb-3 font-bold">
