@@ -77,6 +77,7 @@ function Home() {
   }, []);
   
 
+  // for sale
   const [saleListing, setSaleListing] = useState(null);
 
   useEffect(() => {
@@ -87,7 +88,7 @@ function Home() {
         // create query
         const q = query(
           listingRef,
-          where("type", "==", "sell"),
+          where("type", "==", "sale"),
           orderBy("timestamp", "desc"),
           limit(4)
         );
