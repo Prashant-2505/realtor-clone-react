@@ -158,7 +158,7 @@ function Home() {
 {saleListing && saleListing.length > 0 && (
           <div className="m-2 mb-6">
             <h2 className="px-3 text-2xl mt-2 font-semi ">Places for sale</h2>
-            <Link to="/category/sell">
+            <Link to="/category/sale">
               <p className="px-3 text-sm text-blue-600 hover:text-blue-800 transition duration-200 ease-in-out">
                 Show more places for sale
               </p>
