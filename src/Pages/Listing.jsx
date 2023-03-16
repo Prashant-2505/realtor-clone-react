@@ -124,7 +124,7 @@ function Listing() {
 
             <li className="flex items-center whitespace-nowrap gap-2 ">
               <FaBath className="text-lg" />
-              {+listing.Bathrooms > 1 ? `${listing.Bathrooms} Baths` : "1 Bath"}
+              {+listing.bathrooms > 1 ? `${listing.bathrooms} Baths` : "1 Bath"}
             </li>
 
             <li className="flex items-center whitespace-nowrap gap-2 ">

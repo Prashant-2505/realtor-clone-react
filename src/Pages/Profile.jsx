@@ -82,7 +82,7 @@ export default function Profile() {
 
   async function onDelete(listingID)
   {
-      if(window.confirm("are sureyou want to delete"))
+      if(window.confirm("are sure you want to delete"))
       {
         // delete doc is used delteion of in firestroe databse
         await deleteDoc(doc(db,"listings",listingID))
